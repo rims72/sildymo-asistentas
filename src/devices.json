@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "type": "Dujinis katilas",
+    "brand": "Protherm Gepard 24",
+    "power_kw": 24,
+    "price_eur": 1300,
+    "vendors": [
+      { "name": "Sildymas.lt", "url": "https://sildymas.lt/protherm-gepard-24" },
+      { "name": "Katilai123", "url": "https://katilai123.lt/protherm-gepard-24" }
+    ],
+    "gas_required": true,
+    "solar_compatible": false,
+    "own_power_plant_required": false
+  },
+  {
+    "id": "2",
+    "type": "Šilumos siurblys oras-vanduo",
+    "brand": "Panasonic Aquarea 9kW",
+    "power_kw": 9,
+    "price_eur": 4300,
+    "vendors": [
+      { "name": "Orasvanduo.lt", "url": "https://orasvanduo.lt/panasonic-aquarea-9kw" }
+    ],
+    "gas_required": false,
+    "solar_compatible": true,
+    "own_power_plant_required": false
+  },
+  {
+    "id": "3",
+    "type": "Šilumos siurblys oras-oras",
+    "brand": "Haier Flexis Plus 5kW",
+    "power_kw": 5,
+    "price_eur": 1200,
+    "vendors": [
+      { "name": "SilumosMeistrai.lt", "url": "https://silumosmeistrai.lt/haier-flexis-plus-5kw" }
+    ],
+    "gas_required": false,
+    "solar_compatible": true,
+    "own_power_plant_required": false
+  }
+]
