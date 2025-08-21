@@ -1,42 +1,102 @@
 [
   {
-    "id": "1",
-    "type": "Dujinis katilas",
-    "brand": "Protherm Gepard 24",
+    "id": "g-1",
+    "type": "Kondensacinis dujinis katilas",
+    "brand": "Viessmann",
+    "model": "Vitodens 050-W",
+    "fuel": "gas",
+    "power_kw_min": 3.2,
+    "power_kw_max": 25,
+    "price_eur": 1550,
+    "dhw": "atskiras",
+    "solar_compatible": true,
+    "vendors": [
+      { "name": "Šiluma LT", "url": "https://example.com/viessmann050", "email": "pardavimai@siluma.lt" }
+    ]
+  },
+  {
+    "id": "g-2",
+    "type": "Kondensacinis dujinis katilas",
+    "brand": "Buderus",
+    "model": "Logamax plus GB122",
+    "fuel": "gas",
     "power_kw": 24,
-    "price_eur": 1300,
+    "price_eur": 1690,
+    "dhw": "atskiras",
+    "solar_compatible": true,
     "vendors": [
-      { "name": "Sildymas.lt", "url": "https://sildymas.lt/protherm-gepard-24" },
-      { "name": "Katilai123", "url": "https://katilai123.lt/protherm-gepard-24" }
-    ],
-    "gas_required": true,
+      { "name": "TermoShop", "url": "https://example.com/gb122", "email": "sales@termoshop.lt" }
+    ]
+  },
+  {
+    "id": "p-1",
+    "type": "Granulinis katilas",
+    "brand": "Kostrzewa",
+    "model": "Mini Bio",
+    "fuel": "pellet",
+    "power_kw_min": 8,
+    "power_kw_max": 24,
+    "price_eur": 3100,
+    "dhw": "atskiras",
+    "solar_compatible": true,
+    "vendors": [
+      { "name": "Granulės24", "url": "https://example.com/minibio", "email": "info@granules24.lt" }
+    ]
+  },
+  {
+    "id": "s-1",
+    "type": "Kietojo kuro katilas",
+    "brand": "Viadrus",
+    "model": "Hercules",
+    "fuel": "solid",
+    "power_kw": 25,
+    "price_eur": 1900,
+    "dhw": "atskiras",
     "solar_compatible": false,
-    "own_power_plant_required": false
+    "vendors": [
+      { "name": "Šilumos centras", "url": "https://example.com/viadrus", "email": "parduotuve@silumoscentras.lt" }
+    ]
   },
   {
-    "id": "2",
-    "type": "Šilumos siurblys oras-vanduo",
-    "brand": "Panasonic Aquarea 9kW",
-    "power_kw": 9,
-    "price_eur": 4300,
-    "vendors": [
-      { "name": "Orasvanduo.lt", "url": "https://orasvanduo.lt/panasonic-aquarea-9kw" }
-    ],
-    "gas_required": false,
+    "id": "e-1",
+    "type": "Elektrinis katilas",
+    "brand": "Protherm",
+    "model": "Ray 14",
+    "fuel": "electric",
+    "power_kw": 14,
+    "price_eur": 880,
+    "dhw": "none",
     "solar_compatible": true,
-    "own_power_plant_required": false
+    "vendors": [
+      { "name": "El-Šiluma", "url": "https://example.com/ray14", "email": "info@el-siluma.lt" }
+    ]
   },
   {
-    "id": "3",
-    "type": "Šilumos siurblys oras-oras",
-    "brand": "Haier Flexis Plus 5kW",
-    "power_kw": 5,
-    "price_eur": 1200,
-    "vendors": [
-      { "name": "SilumosMeistrai.lt", "url": "https://silumosmeistrai.lt/haier-flexis-plus-5kw" }
-    ],
-    "gas_required": false,
+    "id": "hp-1",
+    "type": "Oras–vanduo šilumos siurblys",
+    "brand": "Panasonic",
+    "model": "Aquarea 7 kW",
+    "fuel": "heatpump",
+    "power_kw": 7,
+    "price_eur": 3800,
+    "dhw": "atskiras",
     "solar_compatible": true,
-    "own_power_plant_required": false
+    "vendors": [
+      { "name": "HVAC Pro", "url": "https://example.com/aquarea7", "email": "sales@hvacpro.lt" }
+    ]
+  },
+  {
+    "id": "hp-2",
+    "type": "Oras–vanduo šilumos siurblys",
+    "brand": "Daikin",
+    "model": "Altherma 11 kW",
+    "fuel": "heatpump",
+    "power_kw": 11,
+    "price_eur": 5200,
+    "dhw": "integruotas",
+    "solar_compatible": true,
+    "vendors": [
+      { "name": "Klimato sprendimai", "url": "https://example.com/altherma11", "email": "info@klimatas.lt" }
+    ]
   }
 ]
