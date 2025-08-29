@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import devices from "./devices.json";
 
 function estimateRequiredKw(area, insulation) {
@@ -9,14 +9,17 @@ function estimateRequiredKw(area, insulation) {
     "Silpna (D ir senesni)": 0.085,
   };
   const coef = coefMap[insulation] ?? 0.06;
-  const kw = Math.max(5, Math.round(A * coef));
-  return kw;
+  return Math.max(5, Math.round(A * coef));
 }
 
 function eur(v) {
   if (v == null) return "-";
   try {
-    return new Intl.NumberFormat("lt-LT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v);
+    return new Intl.NumberFormat("lt-LT", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(v);
   } catch {
     return v + " €";
   }
@@ -27,12 +30,12 @@ export default function HeatingAssistant() {
     buildingType: "Namas",
     area: "",
     insulation: "",
-    gasAvailable: "Ne",           // "Taip" | "Ne"
-    gasLineNearby: false,         // rodomas tik kai gasAvailable === "Ne"
+    gasAvailable: "Ne", // "Taip" | "Ne"
+    gasLineNearby: false,
     ownPowerPlant: false,
     solarPanels: false,
     buildYear: "",
-    dhwType: "",                  // "Integruotas boileris" | "Atskiras boileris" | "Nereikia"
+    dhwType: "", // "Integruotas boileris" | "Atskiras boileris" | "Nereikia"
     budget: "",
     email: "",
   });
@@ -42,7 +45,13 @@ export default function HeatingAssistant() {
   ]);
   const [chatInput, setChatInput] = useState("");
 
+  // Nauja: rūšiavimas
+  const [sortBy, setSortBy] = useState("best"); // best | price_asc | price_desc | power_asc | power_desc
+
+  const printRef = useRef(null);
+
   const showGasNearby = inputs.gasAvailable === "Ne";
+
   const budgetNum = useMemo(() => {
     const n = parseInt(String(inputs.budget).replace(/[^\d]/g, ""), 10);
     return Number.isFinite(n) ? n : undefined;
@@ -59,23 +68,19 @@ export default function HeatingAssistant() {
     // 1) Kuras / dujos
     list = list.filter((d) => {
       if (d.fuel === "gas") {
-        // dujinis galimas jei yra įvadas, arba nėra įvado, bet trasa šalia (ekonomiškai galima jungtis)
         if (inputs.gasAvailable === "Taip") return true;
         if (inputs.gasAvailable === "Ne" && inputs.gasLineNearby) return true;
         return false;
       }
-      return true; // kiti kurai – visada galimi
+      return true;
     });
 
     // 2) Saulės suderinamumas
-    if (inputs.solarPanels && list.length) {
+    if (inputs.solarPanels) {
       list = list.filter((d) => d.solar_compatible !== false);
     }
 
-    // 3) Nuosava elektrinė (preferuojame elektrą / šilumos siurblį, bet nekertame kitų)
-    // Jei labai norisi – čia galima pridėti svorio/rūšiavimą, bet filtro nedarome.
-
-    // 4) DHW tipas
+    // 3) DHW tipas
     if (inputs.dhwType) {
       list = list.filter((d) => {
         if (!d.dhw) return inputs.dhwType === "Nereikia";
@@ -86,35 +91,65 @@ export default function HeatingAssistant() {
       });
     }
 
-    // 5) Galia – atrenkame, kad įrenginio galia apytiksliai dengtų poreikį
+    // 4) Galia – turi apytiksliai dengti poreikį
     const need = requiredKw || 0;
     list = list.filter((d) => {
       const pk = d.power_kw;
       const pmin = d.power_kw_min ?? pk ?? 0;
       const pmax = d.power_kw_max ?? pk ?? 0;
       if (!need) return true;
-      // viengubas skaičius
       if (pmin === pmax) {
         return pmin >= need * 0.8 && pmin <= need * 1.5;
       }
-      // intervalas
       return need >= pmin * 0.7 && need <= pmax * 1.3;
     });
 
-    // 6) Biudžetas
-    if (budgetNum) list = list.filter((d) => (d.price_eur ?? Infinity) <= budgetNum);
+    // 5) Biudžetas
+    if (budgetNum) {
+      list = list.filter((d) => (d.price_eur ?? Infinity) <= budgetNum);
+    }
 
-    // 7) Rūšiavimas: arčiausiai poreikio esanti galia, po to kaina
-    list = list
-      .map((d) => {
-        const ref = d.power_kw ?? d.power_kw_min ?? need;
-        const score = Math.abs((ref || need) - need) + (d.price_eur || 999999) / 100000;
-        return { ...d, _score: score };
-      })
-      .sort((a, b) => a._score - b._score);
+    // 6) Score „geriausias atitikimas“
+    list = list.map((d) => {
+      const ref = d.power_kw ?? d.power_kw_min ?? need;
+      const score =
+        Math.abs((ref || need) - need) + (d.price_eur || 999999) / 100000;
+      return { ...d, _score: score };
+    });
+
+    // 7) Rūšiavimas
+    switch (sortBy) {
+      case "price_asc":
+        list.sort((a, b) => (a.price_eur || 9e9) - (b.price_eur || 9e9));
+        break;
+      case "price_desc":
+        list.sort((a, b) => (b.price_eur || -1) - (a.price_eur || -1));
+        break;
+      case "power_asc": {
+        const p = (d) => d.power_kw ?? d.power_kw_min ?? d.power_kw_max ?? 0;
+        list.sort((a, b) => p(a) - p(b));
+        break;
+      }
+      case "power_desc": {
+        const p = (d) => d.power_kw ?? d.power_kw_min ?? d.power_kw_max ?? 0;
+        list.sort((a, b) => p(b) - p(a));
+        break;
+      }
+      default:
+        list.sort((a, b) => a._score - b._score);
+    }
 
     return list;
-  }, [devices, inputs.gasAvailable, inputs.gasLineNearby, inputs.solarPanels, inputs.dhwType, requiredKw, budgetNum]);
+  }, [
+    devices,
+    inputs.gasAvailable,
+    inputs.gasLineNearby,
+    inputs.solarPanels,
+    inputs.dhwType,
+    requiredKw,
+    budgetNum,
+    sortBy,
+  ]);
 
   function handleInputChange(e) {
     const { name, value, type, checked } = e.target;
@@ -143,7 +178,9 @@ export default function HeatingAssistant() {
       `- Plotas: ${inputs.area || "?"} m²`,
       `- Izoliacija: ${inputs.insulation || "?"}`,
       `- Dujos: ${inputs.gasAvailable}${
-        inputs.gasAvailable === "Ne" ? `, trasa šalia: ${inputs.gasLineNearby ? "Taip" : "Ne"}` : ""
+        inputs.gasAvailable === "Ne"
+          ? `, trasa šalia: ${inputs.gasLineNearby ? "Taip" : "Ne"}`
+          : ""
       }`,
       `- Nuosava elektrinė: ${inputs.ownPowerPlant ? "Yra" : "Nėra"}`,
       `- Saulės baterijos: ${inputs.solarPanels ? "Yra" : "Nėra"}`,
@@ -157,7 +194,9 @@ export default function HeatingAssistant() {
     const emails = new Set();
     top.forEach((d) => (d.vendors || []).forEach((v) => v.email && emails.add(v.email)));
     const to = encodeURIComponent(Array.from(emails).join(","));
-    const href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines)}`;
+    const href = `mailto:${to}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(bodyLines)}`;
     window.location.href = href;
   }
 
@@ -167,25 +206,74 @@ export default function HeatingAssistant() {
     setChatMessages((prev) => [...prev, { sender: "Jūs", text: q }]);
 
     let a =
-      "Ačiū už klausimą! Dėžutė veikia lokaliai ir pateikia bendro pobūdžio atsakymus. Užpildykite laukus viršuje – lentelė iškart atnaujinama.";
+      "Ačiū už klausimą! Dėžutė veikia lokaliai ir pateikia bendro pobūdžio atsakymus. Užpildykite laukus viršuje – lentelė iškart atsinaujina.";
     const low = q.toLowerCase();
     if (low.includes("kiek kw") || low.includes("koks galingumas")) {
-      a = `Apytikslis poreikis: ~${requiredKw} kW pagal jūsų plotą ir izoliaciją. Projektiniams skaičiavimams reikia detalesnio šilumos nuostolių vertinimo.`;
+      a = `Apytikslis poreikis: ~${requiredKw} kW pagal jūsų plotą ir izoliaciją. Projektiniams skaičiavimams reikia detalesnio šilumos nuostolių skaičiavimo.`;
     } else if (low.includes("dujos")) {
       a =
         inputs.gasAvailable === "Taip"
-          ? "Turint dujų įvadą, dažniausiai tinka kondensaciniai dujiniai katilai."
+          ? "Turint dujų įvadą, dažnai tinka kondensaciniai dujiniai katilai."
           : showGasNearby
-          ? "Dujų įvado nėra. Jei trasa šalia, jungtis įmanoma; kitu atveju – granulės ar šilumos siurblys."
+          ? "Dujų įvado nėra. Jei trasa šalia, jungtis galima; kitu atveju – granulės ar šilumos siurblys."
           : "Dujų įvado nėra. Rekomenduojama svarstyti granules, kietą kurą arba šilumos siurblį.";
     } else if (low.includes("saul")) {
       a = inputs.solarPanels
-        ? "Turint saulės modulius, šilumos siurblys ar elektrinis katilas tampa patrauklesni."
-        : "Be saulės modulių šilumos siurblys vis tiek labai efektyvus, bet elektros kaina svarbi.";
+        ? "Turint saulės modulius, šilumos siurblys ar elektrinis katilas gali sumažinti sąnaudas."
+        : "Be saulės modulių šilumos siurblys vis tiek efektyvus, bet elektros kaina reikšminga.";
     }
 
     setChatMessages((prev) => [...prev, { sender: "AI", text: a }]);
     setChatInput("");
+  }
+
+  // CSV eksportas
+  function exportCSV() {
+    const header = [
+      "Tipas",
+      "Gamintojas",
+      "Modelis",
+      "Kuras",
+      "Galia_kW",
+      "Kaina_EUR",
+      "DHW",
+      "Pardavejai"
+    ];
+    const rows = filteredDevices.map((d) => [
+      d.type || "",
+      d.brand || "",
+      d.model || "",
+      d.fuel || "",
+      d.power_kw ?? `${d.power_kw_min ?? ""}-${d.power_kw_max ?? ""}`,
+      d.price_eur ?? "",
+      d.dhw || "",
+      (d.vendors || []).map((v) => v.name).join(" | "),
+    ]);
+    const csv = [header, ...rows].map((r) => r.map(escapeCSV).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sirenkami_irenginiai.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  function escapeCSV(v) {
+    const s = String(v ?? "");
+    if (s.includes(",") || s.includes("\"") || s.includes("\n")) {
+      return `"${s.replace(/"/g, '""')}"`;
+    }
+    return s;
+  }
+
+  // Spausdinimas → PDF (naudojamas naršyklės „Print…“)
+  function printPDF() {
+    const el = printRef.current;
+    if (!el) return;
+    // Pridedam/nuimam klasę, kad spaudinyje būtų tik lentelė ir antraštė
+    document.body.classList.add("print-mode");
+    window.print();
+    setTimeout(() => document.body.classList.remove("print-mode"), 500);
   }
 
   return (
@@ -330,9 +418,39 @@ export default function HeatingAssistant() {
         />
       </div>
 
-      {/* Lentelė */}
-      <h2 className="text-xl font-semibold mt-4 mb-2">Siūlomi įrenginiai</h2>
-      <div className="overflow-x-auto">
+      {/* Valdikliai virš lentelės */}
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-3">
+        <h2 className="text-xl font-semibold">Siūlomi įrenginiai</h2>
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-700">Rūšiuoti pagal:</label>
+          <select
+            className="border p-2 rounded"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="best">Geriausias atitikimas</option>
+            <option value="price_asc">Kaina ↑</option>
+            <option value="price_desc">Kaina ↓</option>
+            <option value="power_asc">Galia ↑</option>
+            <option value="power_desc">Galia ↓</option>
+          </select>
+          <button
+            onClick={exportCSV}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-2xl border"
+          >
+            Eksportuoti CSV
+          </button>
+          <button
+            onClick={printPDF}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-2xl border"
+          >
+            Spausdinti / PDF
+          </button>
+        </div>
+      </div>
+
+      {/* Lentelė (taip pat spausdinamas turinys) */}
+      <div ref={printRef} className="overflow-x-auto">
         <table className="w-full border mb-2">
           <thead>
             <tr className="bg-gray-200">
@@ -355,7 +473,9 @@ export default function HeatingAssistant() {
             {filteredDevices.map((d) => (
               <tr key={d.id}>
                 <td className="border p-2">{d.type}</td>
-                <td className="border p-2">{d.brand} {d.model}</td>
+                <td className="border p-2">
+                  {d.brand} {d.model}
+                </td>
                 <td className="border p-2">{d.fuel}</td>
                 <td className="border p-2 text-center">
                   {d.power_kw ?? (d.power_kw_min + "–" + d.power_kw_max)}
@@ -379,11 +499,23 @@ export default function HeatingAssistant() {
             ))}
           </tbody>
         </table>
+
+        {/* Spausdinimui – papildoma suvestinė */}
+        <div className="mt-4 text-sm text-gray-700">
+          <p><strong>Objekto suvestinė:</strong></p>
+          <p>Tipas: {inputs.buildingType} | Plotas: {inputs.area || "?"} m² | Izoliacija: {inputs.insulation || "?"}</p>
+          <p>
+            Dujos: {inputs.gasAvailable}
+            {inputs.gasAvailable === "Ne" ? `, trasa šalia: ${inputs.gasLineNearby ? "Taip" : "Ne"}` : ""}
+            {" | "}PV: {inputs.solarPanels ? "Taip" : "Ne"} | Nuosava el.: {inputs.ownPowerPlant ? "Taip" : "Ne"}
+          </p>
+          <p>DHW: {inputs.dhwType || "Nenurodyta"} | Biudžetas: {inputs.budget || "Nenurodytas"}</p>
+        </div>
       </div>
 
       <button
         onClick={handleSendProposal}
-        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl shadow-lg mb-6"
+        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl shadow-lg mt-4 mb-6"
       >
         Gauti pasiūlymą
       </button>
@@ -395,7 +527,9 @@ export default function HeatingAssistant() {
           {chatMessages.map((msg, idx) => (
             <div
               key={idx}
-              className={msg.sender === "AI" ? "text-gray-600 mb-1" : "text-black font-semibold mb-1"}
+              className={
+                msg.sender === "AI" ? "text-gray-600 mb-1" : "text-black font-semibold mb-1"
+              }
             >
               <strong>{msg.sender}:</strong> {msg.text}
             </div>
@@ -417,6 +551,29 @@ export default function HeatingAssistant() {
           </button>
         </div>
       </div>
+
+      {/* Spausdinimo stiliai */}
+      <style>{`
+        @media print {
+          body.print-mode * {
+            visibility: hidden !important;
+          }
+          body.print-mode .print-only,
+          body.print-mode table,
+          body.print-mode table *,
+          body.print-mode .mt-4,
+          body.print-mode .mt-4 * {
+            visibility: visible !important;
+            color: #000 !important;
+          }
+          body.print-mode .max-w-3xl {
+            box-shadow: none !important;
+          }
+          body.print-mode .max-w-3xl {
+            position: absolute; left: 0; top: 0; width: 100%;
+          }
+        }
+      `}</style>
     </div>
   );
 }
