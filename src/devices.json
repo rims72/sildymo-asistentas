@@ -1,102 +1,633 @@
-[
-  {
-    "id": "g-1",
-    "type": "Kondensacinis dujinis katilas",
-    "brand": "Viessmann",
-    "model": "Vitodens 050-W",
-    "fuel": "gas",
-    "power_kw_min": 3.2,
-    "power_kw_max": 25,
-    "price_eur": 1550,
-    "dhw": "atskiras",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "Šiluma LT", "url": "https://example.com/viessmann050", "email": "pardavimai@siluma.lt" }
-    ]
-  },
-  {
-    "id": "g-2",
-    "type": "Kondensacinis dujinis katilas",
-    "brand": "Buderus",
-    "model": "Logamax plus GB122",
-    "fuel": "gas",
-    "power_kw": 24,
-    "price_eur": 1690,
-    "dhw": "atskiras",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "TermoShop", "url": "https://example.com/gb122", "email": "sales@termoshop.lt" }
-    ]
-  },
-  {
-    "id": "p-1",
-    "type": "Granulinis katilas",
-    "brand": "Kostrzewa",
-    "model": "Mini Bio",
-    "fuel": "pellet",
-    "power_kw_min": 8,
-    "power_kw_max": 24,
-    "price_eur": 3100,
-    "dhw": "atskiras",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "Granulės24", "url": "https://example.com/minibio", "email": "info@granules24.lt" }
-    ]
-  },
-  {
-    "id": "s-1",
-    "type": "Kietojo kuro katilas",
-    "brand": "Viadrus",
-    "model": "Hercules",
-    "fuel": "solid",
-    "power_kw": 25,
-    "price_eur": 1900,
-    "dhw": "atskiras",
-    "solar_compatible": false,
-    "vendors": [
-      { "name": "Šilumos centras", "url": "https://example.com/viadrus", "email": "parduotuve@silumoscentras.lt" }
-    ]
-  },
-  {
-    "id": "e-1",
-    "type": "Elektrinis katilas",
-    "brand": "Protherm",
-    "model": "Ray 14",
-    "fuel": "electric",
-    "power_kw": 14,
-    "price_eur": 880,
-    "dhw": "none",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "El-Šiluma", "url": "https://example.com/ray14", "email": "info@el-siluma.lt" }
-    ]
-  },
-  {
-    "id": "hp-1",
-    "type": "Oras–vanduo šilumos siurblys",
-    "brand": "Panasonic",
-    "model": "Aquarea 7 kW",
-    "fuel": "heatpump",
-    "power_kw": 7,
-    "price_eur": 3800,
-    "dhw": "atskiras",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "HVAC Pro", "url": "https://example.com/aquarea7", "email": "sales@hvacpro.lt" }
-    ]
-  },
-  {
-    "id": "hp-2",
-    "type": "Oras–vanduo šilumos siurblys",
-    "brand": "Daikin",
-    "model": "Altherma 11 kW",
-    "fuel": "heatpump",
-    "power_kw": 11,
-    "price_eur": 5200,
-    "dhw": "integruotas",
-    "solar_compatible": true,
-    "vendors": [
-      { "name": "Klimato sprendimai", "url": "https://example.com/altherma11", "email": "info@klimatas.lt" }
-    ]
-  }
-]
+{
+  "premium": [
+    {
+      "id": "hp-panasonic-7",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (monoblokas)",
+      "brand": "Panasonic",
+      "model": "Aquarea Mono 7 kW",
+      "fuel": "heatpump",
+      "power_kw": 7,
+      "price_eur": 3800,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.8,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 52,
+      "notes": "Geras kainos/našumo santykis; platus servisas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/aquarea-7", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-panasonic-9",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (monoblokas)",
+      "brand": "Panasonic",
+      "model": "Aquarea Mono 9 kW",
+      "fuel": "heatpump",
+      "power_kw": 9,
+      "price_eur": 4100,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.7,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 54,
+      "notes": "Universalus 120–160 m² namams.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/aquarea-9", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-panasonic-12",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (monoblokas)",
+      "brand": "Panasonic",
+      "model": "Aquarea Mono 12 kW",
+      "fuel": "heatpump",
+      "power_kw": 12,
+      "price_eur": 5200,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.6,
+      "scop": 4.5,
+      "min_temp": -20,
+      "sound_db": 56,
+      "notes": "Tinka didesniems plotams ir radiatorinėms sistemoms.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/aquarea-12", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-daikin-8",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (split)",
+      "brand": "Daikin",
+      "model": "Altherma 3 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 5200,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.9,
+      "scop": 4.7,
+      "min_temp": -25,
+      "sound_db": 53,
+      "notes": "Labai stabilus prie žemų temperatūrų; gera automatika.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/altherma-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-daikin-11",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (split)",
+      "brand": "Daikin",
+      "model": "Altherma 3 11 kW",
+      "fuel": "heatpump",
+      "power_kw": 11,
+      "price_eur": 6200,
+      "dhw": "integruotas",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.7,
+      "scop": 4.7,
+      "min_temp": -25,
+      "sound_db": 55,
+      "notes": "Su integruotu boileriu – mažiau vietos vidaus įrangai.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/altherma-11", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-mitsu-85",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (split)",
+      "brand": "Mitsubishi Electric",
+      "model": "Ecodan 8.5 kW",
+      "fuel": "heatpump",
+      "power_kw": 8.5,
+      "price_eur": 5900,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.8,
+      "scop": 4.6,
+      "min_temp": -25,
+      "sound_db": 53,
+      "notes": "Lyderis darbo prie šalčio srityje; ilgaamžiškumas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/ecodan-85", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-mitsu-112",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (split)",
+      "brand": "Mitsubishi Electric",
+      "model": "Ecodan 11.2 kW",
+      "fuel": "heatpump",
+      "power_kw": 11.2,
+      "price_eur": 6700,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.6,
+      "scop": 4.6,
+      "min_temp": -25,
+      "sound_db": 55,
+      "notes": "Puikiai laiko galią esant -15 °C.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/ecodan-112", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-nibe-8",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "NIBE",
+      "model": "F2040-8",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 6200,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R410A",
+      "cop": 4.6,
+      "scop": 4.7,
+      "min_temp": -20,
+      "sound_db": 52,
+      "notes": "Skandinaviškas kalibravimas; labai geri SCOP.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/nibe-f2040-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-nibe-12",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "NIBE",
+      "model": "F2040-12",
+      "fuel": "heatpump",
+      "power_kw": 12,
+      "price_eur": 7300,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R410A",
+      "cop": 4.5,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 54,
+      "notes": "Stabilus didesniems namams; plati integracija su NIBE valdikliais.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/nibe-f2040-12", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-viessmann-100s-8",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (split)",
+      "brand": "Viessmann",
+      "model": "Vitocal 100-S 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 6100,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.7,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 55,
+      "notes": "Vokiečių kokybė, ViCare valdymas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/vitocal-100s-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-viessmann-150a-10",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys (monoblokas)",
+      "brand": "Viessmann",
+      "model": "Vitocal 150-A 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 7200,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R290",
+      "cop": 5.0,
+      "scop": 4.8,
+      "min_temp": -25,
+      "sound_db": 54,
+      "notes": "R290 – aukštos srautų temperatūros, didelis efektyvumas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/vitocal-150a-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-bosch-7000i-7",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Bosch",
+      "model": "Compress 7000i 7 kW",
+      "fuel": "heatpump",
+      "power_kw": 7,
+      "price_eur": 5400,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.7,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 52,
+      "notes": "Gera integracija su Bosch katilais ir valdikliais.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/bosch-7000i-7", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-bosch-7000i-9",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Bosch",
+      "model": "Compress 7000i 9 kW",
+      "fuel": "heatpump",
+      "power_kw": 9,
+      "price_eur": 5850,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.6,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 53,
+      "notes": "Balansas tarp kainos ir kokybės, patikimas servisas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/bosch-7000i-9", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-stiebel-07",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Stiebel Eltron",
+      "model": "WPL 07",
+      "fuel": "heatpump",
+      "power_kw": 7,
+      "price_eur": 6900,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R410A",
+      "cop": 4.6,
+      "scop": 4.6,
+      "min_temp": -20,
+      "sound_db": 52,
+      "notes": "Premium vokiečių segmentas, tvirtas korpusas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/stiebel-wpl07", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-lg-thermav-9",
+      "tier": "premium",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "LG",
+      "model": "Therma V 9 kW",
+      "fuel": "heatpump",
+      "power_kw": 9,
+      "price_eur": 5100,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.6,
+      "scop": 4.5,
+      "min_temp": -20,
+      "sound_db": 53,
+      "notes": "Stiprus valdymas ir geras Wi-Fi integravimas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/lg-therma-9", "email": "sales@jusuimone.lt" }
+      ]
+    }
+  ],
+  "budget": [
+    {
+      "id": "hp-midea-8",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Midea",
+      "model": "M-Thermal 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 3300,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.5,
+      "scop": 4.3,
+      "min_temp": -20,
+      "sound_db": 54,
+      "notes": "Biudžetinis pasirinkimas, ekonomiškas šiltesnėmis dienomis.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/midea-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "hp-midea-12",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Midea",
+      "model": "M-Thermal 12 kW",
+      "fuel": "heatpump",
+      "power_kw": 12,
+      "price_eur": 3700,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.4,
+      "scop": 4.2,
+      "min_temp": -20,
+      "sound_db": 56,
+      "notes": "Tinka didesniems plotams su ribotu biudžetu.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/midea-12", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-gree-10",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Gree",
+      "model": "Versati III 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 3600,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.4,
+      "scop": 4.2,
+      "min_temp": -20,
+      "sound_db": 55,
+      "notes": "Didelis AC gamintojas; reikia geros montavimo kokybės.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/gree-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-haier-10",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Haier",
+      "model": "SuperMatch 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 3500,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.4,
+      "scop": 4.1,
+      "min_temp": -20,
+      "sound_db": 56,
+      "notes": "Ekonomiškas, bet serviso tinklas kuklesnis nei premium.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/haier-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-hisense-8",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Hisense",
+      "model": "Hi-Therma 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 3150,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.3,
+      "scop": 4.1,
+      "min_temp": -20,
+      "sound_db": 55,
+      "notes": "Pigus startas; pasitikrinkite garantinio aptarnavimo sąlygas.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/hisense-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-nordis-10",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Nordis",
+      "model": "Alpha 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 3400,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.3,
+      "scop": 4.2,
+      "min_temp": -22,
+      "sound_db": 55,
+      "notes": "Neprasta žemų T savybė už savo kainą.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/nordis-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-alsavo-10",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Alsavo",
+      "model": "ASW 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 3350,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.3,
+      "scop": 4.2,
+      "min_temp": -20,
+      "sound_db": 55,
+      "notes": "Biudžetinė klasė su bazinėmis funkcijomis.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/alsavo-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-heiko-8",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Heiko",
+      "model": "HWK 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 3050,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.2,
+      "scop": 4.0,
+      "min_temp": -20,
+      "sound_db": 56,
+      "notes": "Tinka ribotam biudžetui; rekomenduojama su grindiniu šildymu.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/heiko-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-ch-10",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Cooper&Hunter",
+      "model": "CH-HP 10 kW",
+      "fuel": "heatpump",
+      "power_kw": 10,
+      "price_eur": 3250,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.3,
+      "scop": 4.1,
+      "min_temp": -20,
+      "sound_db": 55,
+      "notes": "Platus platintojų tinklas, bazinė automatika.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/ch-10", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "hp-ariston-8",
+      "tier": "budget",
+      "type": "Oras–vanduo šilumos siurblys",
+      "brand": "Ariston",
+      "model": "Nimbus 50M 8 kW",
+      "fuel": "heatpump",
+      "power_kw": 8,
+      "price_eur": 3950,
+      "dhw": "integruotas",
+      "solar_compatible": true,
+      "refrigerant": "R32",
+      "cop": 4.4,
+      "scop": 4.3,
+      "min_temp": -20,
+      "sound_db": 54,
+      "notes": "Su integruotu boileriu; patogus butams/kotedžams.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/ariston-8", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "el-protherm-14",
+      "tier": "budget",
+      "type": "Elektrinis katilas",
+      "brand": "Protherm",
+      "model": "Ray 14 kW",
+      "fuel": "electric",
+      "power_kw": 14,
+      "price_eur": 880,
+      "dhw": "none",
+      "solar_compatible": true,
+      "refrigerant": null,
+      "cop": null,
+      "scop": null,
+      "min_temp": null,
+      "sound_db": null,
+      "notes": "Paprastas sprendimas su PV; nėra COP/SCOP (tiesioginė elektra).",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/protherm-ray14", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "gas-viessmann-25",
+      "tier": "budget",
+      "type": "Kondensacinis dujinis katilas",
+      "brand": "Viessmann",
+      "model": "Vitodens 050-W 25 kW",
+      "fuel": "gas",
+      "power_kw": 25,
+      "price_eur": 1550,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": null,
+      "cop": null,
+      "scop": null,
+      "min_temp": null,
+      "sound_db": null,
+      "notes": "Patikimas dujinis sprendimas su aukštu naudingumu.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/vitodens-050w-25", "email": "sales@jusuimone.lt" }
+      ]
+    },
+    {
+      "id": "gas-buderus-24",
+      "tier": "budget",
+      "type": "Kondensacinis dujinis katilas",
+      "brand": "Buderus",
+      "model": "GB122 24 kW",
+      "fuel": "gas",
+      "power_kw": 24,
+      "price_eur": 1690,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": null,
+      "cop": null,
+      "scop": null,
+      "min_temp": null,
+      "sound_db": null,
+      "notes": "Ekonomiškas kondensacinis katilas; lengva priežiūra.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/gb122-24", "email": "sales@jusuimone.lt" }
+      ]
+    },
+
+    {
+      "id": "pellet-kostrzewa-24",
+      "tier": "budget",
+      "type": "Granulinis katilas",
+      "brand": "Kostrzewa",
+      "model": "Mini Bio 8–24 kW",
+      "fuel": "pellet",
+      "power_kw_min": 8,
+      "power_kw_max": 24,
+      "price_eur": 3100,
+      "dhw": "atskiras",
+      "solar_compatible": true,
+      "refrigerant": null,
+      "cop": null,
+      "scop": null,
+      "min_temp": null,
+      "sound_db": null,
+      "notes": "Automatinis kuro padavimas; reikia vietos bunkeriu.",
+      "vendors": [
+        { "name": "Jūsų Įmonė", "url": "https://jusuimone.lt/minibio-24", "email": "sales@jusuimone.lt" }
+      ]
+    }
+  ]
+}
